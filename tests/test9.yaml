@@ -1,0 +1,39 @@
+esphome:
+  name: sensorgas
+  platform: ESP32
+  board: featheresp32
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  password: ""
+
+web_server:
+  port: 80
+
+i2c:
+
+wifi:
+  ssid: "Wifimund"
+  password: "NewspaperEscapeGoat"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sensorgas Fallback Hotspot"
+    password: "H7JRyzCRHbMW"
+
+captive_portal:
+
+bme680_bsec:
+    address: 0x77
+    sample_rate: ulp
+
+sensor:
+  - platform: bme680_bsec
+    gas_resistance:
+      name: "BME680 Gas Resistance"
