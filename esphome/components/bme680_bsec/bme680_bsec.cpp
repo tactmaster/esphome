@@ -26,7 +26,7 @@ void BME680BSECComponent::setup() {
   this->bme680_.chip_id =
       new_idx;  // This is a "Place holder to store the id of the device structure" (see bme680_defs.h).
                 // This will be passed-in as first parameter to the next "read" and "write" function pointers.
-                // We currently use the index of the object in the BME680BSECComponent::instances vector to identify
+                // We currently use the index of the object in the BME680BSECCom ponent::instances vector to identify
                 // the different devices in the system.
   this->bme680_.intf = BME68X_I2C_INTF;
   this->bme680_.read = BME680BSECComponent::read_bytes_wrapper;
@@ -423,6 +423,8 @@ void BME680BSECComponent::publish_sensor_(text_sensor::TextSensor *sensor, const
 // First parameter is the "dev_id" member of our "bme680_" object, which is passed-back here as-is
 int8_t BME680BSECComponent::read_bytes_wrapper(uint8_t reg_addr, uint8_t *reg_data, uint32_t length, void *intf_ptr){
   uint8_t dev_addr = *(uint8_t*)intf_ptr;
+  ESP_LOGD(TAG, "Address read %d", dev_addr);
+
   BME680BSECComponent *inst = instances[dev_addr];
   // Use the I2CDevice::read_bytes method to perform the actual I2C register read
   return inst->read_bytes(reg_addr, reg_data, length) ? 0 : -1;
@@ -432,6 +434,7 @@ int8_t BME680BSECComponent::read_bytes_wrapper(uint8_t reg_addr, uint8_t *reg_da
 // First parameter is the "dev_id" member of our "bme680_" object, which is passed-back here as-is
 int8_t BME680BSECComponent::write_bytes_wrapper(uint8_t reg_addr, const uint8_t *reg_data, uint32_t length,void *intf_ptr){
   uint8_t dev_addr = *(uint8_t*)intf_ptr;
+  ESP_LOGD(TAG, "Address write%d", dev_addr);
   BME680BSECComponent *inst = instances[dev_addr];
   // Use the I2CDevice::write_bytes method to perform the actual I2C register write
   return inst->write_bytes(reg_addr, reg_data, length) ? 0 : -1;
