@@ -427,7 +427,9 @@ int8_t BME680BSECComponent::read_bytes_wrapper(uint8_t reg_addr, uint8_t *reg_da
 
   BME680BSECComponent *inst = instances[dev_addr];
   // Use the I2CDevice::read_bytes method to perform the actual I2C register read
-  return inst->read_bytes(reg_addr, reg_data, length) ? 0 : -1;
+  //  return inst->read_bytes(reg_addr, reg_data, length) ? 0 : -1;
+  return  0 ;
+
 }
 
 // Communication function - write
@@ -437,7 +439,8 @@ int8_t BME680BSECComponent::write_bytes_wrapper(uint8_t reg_addr, const uint8_t 
   ESP_LOGD(TAG, "Address write%d", dev_addr);
   BME680BSECComponent *inst = instances[dev_addr];
   // Use the I2CDevice::write_bytes method to perform the actual I2C register write
-  return inst->write_bytes(reg_addr, reg_data, length) ? 0 : -1;
+   // return inst->write_bytes(reg_addr, reg_data, length) ? 0 : -1;
+  return  0 ;
 }
 
 void BME680BSECComponent::delay_us(uint32_t period,void *intf_ptr) {
