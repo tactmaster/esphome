@@ -7,7 +7,6 @@ namespace bme680 {
 
 static const char *const TAG = "bme680.sensor";
 
-
 static const uint8_t BME680_REG_VARIANT = 0xF0;
 
 static const uint8_t BME680_REGISTER_COEFF1 = 0x89;
@@ -468,7 +467,6 @@ float BME680Component::calc_humidity_(uint16_t raw_humidity) {
   return calc_hum;
 }
 float BME680Component::calc_gas_resistance_(uint16_t raw_gas, uint8_t range) {
-  
   float calc_gas_res;
   float var1 = 0;
   float var2 = 0;
@@ -484,10 +482,10 @@ float BME680Component::calc_gas_resistance_(uint16_t raw_gas, uint8_t range) {
     var2 = 4096 + var2;
     calc_gas_res = (1000 * var1) / var2;
     calc_gas_res = calc_gas_res * 100;
-  } else { 
+  } else {
     var1 = 1340.0f + (5.0f * range_sw_err);
     var2 = var1 * (1.0f + BME680_GAS_LOOKUP_TABLE_1[range] / 100.0f);
-    var3 = 1.0f + (BME680_GAS_LOOKUP_TABLE_2[range] / 100.0f); 
+    var3 = 1.0f + (BME680_GAS_LOOKUP_TABLE_2[range] / 100.0f);
     calc_gas_res = 1.0f / (var3 * 0.000000125f * range_f * (((raw_gas_f - 512.0f) / var2) + 1.0f));
   }
   return calc_gas_res;
