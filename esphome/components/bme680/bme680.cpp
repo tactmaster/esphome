@@ -142,7 +142,7 @@ void BME680Component::setup() {
 
   // Read variant
   uint8_t chip_var;
-  if (!this->read_byte(BME680_REGISTER_COEFF1, &chip_var)) {
+  if (!this->read_byte(BME680_REG_VARIANT, &chip_var)) {
     this->mark_failed();
     return;
   }

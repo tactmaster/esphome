@@ -7,6 +7,7 @@ cd "$(dirname "$0")/.."
 set -x
 
 esphome compile tests/test9.yaml
+esphome compile tests/test10.yaml
 #esphome compile tests/test2.yaml
 #esphome compile tests/test3.yaml
 #esphome compile tests/test4.yaml
