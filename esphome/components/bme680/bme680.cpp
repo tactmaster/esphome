@@ -146,6 +146,7 @@ void BME680Component::setup() {
   if (!this->read_byte(BME680_REGISTER_COEFF1, &chip_var)) {
     this->mark_failed();
     return;
+  }
   this->chip_variant_ = chip_var;
 
   // Config register
