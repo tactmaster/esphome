@@ -128,6 +128,8 @@ class BME680Component : public PollingComponent, public i2c::I2CDevice {
   BME680IIRFilter iir_filter_{BME680_IIR_FILTER_OFF};
   uint16_t heater_temperature_{320};
   uint16_t heater_duration_{150};
+  uint8_t chip_variant_{0};
+
 
   sensor::Sensor *temperature_sensor_{nullptr};
   sensor::Sensor *pressure_sensor_{nullptr};

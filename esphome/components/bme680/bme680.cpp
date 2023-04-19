@@ -7,6 +7,9 @@ namespace bme680 {
 
 static const char *const TAG = "bme680.sensor";
 
+
+static const uint8_t BME680_REG_VARIANT = 0xF0;
+
 static const uint8_t BME680_REGISTER_COEFF1 = 0x89;
 static const uint8_t BME680_REGISTER_COEFF2 = 0xE1;
 
@@ -137,6 +140,13 @@ void BME680Component::setup() {
   this->calibration_.range_sw_err = ((int8_t) temp_var & (int8_t) 0xf0) / 16;
 
   this->calibration_.ambient_temperature = 25;  // prime ambient temperature
+
+  // Read variant
+  uint8_t chip_var;
+  if (!this->read_byte(BME680_REGISTER_COEFF1, &chip_var)) {
+    this->mark_failed();
+    return;
+  this->chip_variant_ = chip_var;
 
   // Config register
   uint8_t config_register;
@@ -457,6 +467,7 @@ float BME680Component::calc_humidity_(uint16_t raw_humidity) {
   return calc_hum;
 }
 float BME680Component::calc_gas_resistance_(uint16_t raw_gas, uint8_t range) {
+  
   float calc_gas_res;
   float var1 = 0;
   float var2 = 0;
@@ -465,12 +476,19 @@ float BME680Component::calc_gas_resistance_(uint16_t raw_gas, uint8_t range) {
   float range_f = 1U << range;
   const float range_sw_err = this->calibration_.range_sw_err;
 
-  var1 = 1340.0f + (5.0f * range_sw_err);
-  var2 = var1 * (1.0f + BME680_GAS_LOOKUP_TABLE_1[range] / 100.0f);
-  var3 = 1.0f + (BME680_GAS_LOOKUP_TABLE_2[range] / 100.0f);
-
-  calc_gas_res = 1.0f / (var3 * 0.000000125f * range_f * (((raw_gas_f - 512.0f) / var2) + 1.0f));
-
+  if (this->chip_variant_ == 0x01) {
+    var1 = 262144 >> range;
+    var2 = raw_gas - 512;
+    var2 *= 3;
+    var2 = 4096 + var2;
+    calc_gas_res = (1000 * var1) / var2;
+    calc_gas_res = calc_gas_res * 100;
+  } else { 
+    var1 = 1340.0f + (5.0f * range_sw_err);
+    var2 = var1 * (1.0f + BME680_GAS_LOOKUP_TABLE_1[range] / 100.0f);
+    var3 = 1.0f + (BME680_GAS_LOOKUP_TABLE_2[range] / 100.0f); 
+    calc_gas_res = 1.0f / (var3 * 0.000000125f * range_f * (((raw_gas_f - 512.0f) / var2) + 1.0f));
+  }
   return calc_gas_res;
 }
 uint32_t BME680Component::calc_meas_duration_() {
