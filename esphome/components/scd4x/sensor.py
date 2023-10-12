@@ -10,7 +10,6 @@ from esphome.const import (
     CONF_CO2,
     CONF_HUMIDITY,
     CONF_TEMPERATURE,
-    CONF_TEMPERATURE_OFFSET,
     CONF_VALUE,
     DEVICE_CLASS_CARBON_DIOXIDE,
     DEVICE_CLASS_HUMIDITY,
@@ -86,7 +85,6 @@ CONFIG_SCHEMA = (
                 cv.int_range(min=0, max=0xFFFF, max_included=False),
             ),
             cv.Optional(CONF_AMBIENT_PRESSURE_COMPENSATION): cv.pressure,
-            cv.Optional(CONF_TEMPERATURE_OFFSET, default="4°C"): cv.temperature,
             cv.Optional(CONF_AMBIENT_PRESSURE_COMPENSATION_SOURCE): cv.use_id(
                 sensor.Sensor
             ),
@@ -109,7 +107,6 @@ SETTING_MAP = {
     CONF_AUTOMATIC_SELF_CALIBRATION: "set_automatic_self_calibration",
     CONF_ALTITUDE_COMPENSATION: "set_altitude_compensation",
     CONF_AMBIENT_PRESSURE_COMPENSATION: "set_ambient_pressure_compensation",
-    CONF_TEMPERATURE_OFFSET: "set_temperature_offset",
 }
 
 

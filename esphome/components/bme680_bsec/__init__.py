@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import i2c, esp32
-from esphome.const import CONF_ID, CONF_TEMPERATURE_OFFSET
+from esphome.const import CONF_ID
 
 CODEOWNERS = ["@trvrnrth"]
 DEPENDENCIES = ["i2c"]
@@ -35,7 +35,6 @@ CONFIG_SCHEMA = cv.All(
     cv.Schema(
         {
             cv.GenerateID(): cv.declare_id(BME680BSECComponent),
-            cv.Optional(CONF_TEMPERATURE_OFFSET, default=0): cv.temperature,
             cv.Optional(CONF_IAQ_MODE, default="STATIC"): cv.enum(
                 IAQ_MODE_OPTIONS, upper=True
             ),
@@ -64,7 +63,6 @@ async def to_code(config):
     await i2c.register_i2c_device(var, config)
 
     cg.add(var.set_device_id(str(config[CONF_ID])))
-    cg.add(var.set_temperature_offset(config[CONF_TEMPERATURE_OFFSET]))
     cg.add(var.set_iaq_mode(config[CONF_IAQ_MODE]))
     cg.add(var.set_sample_rate(config[CONF_SAMPLE_RATE]))
     cg.add(

@@ -4,7 +4,6 @@ from esphome.components import sensor
 from esphome.const import (
     CONF_GAS_RESISTANCE,
     CONF_HUMIDITY,
-    CONF_IAQ_ACCURACY,
     CONF_PRESSURE,
     CONF_TEMPERATURE,
     DEVICE_CLASS_CARBON_DIOXIDE,
@@ -42,7 +41,6 @@ TYPES = [
     CONF_HUMIDITY,
     CONF_GAS_RESISTANCE,
     CONF_IAQ,
-    CONF_IAQ_ACCURACY,
     CONF_CO2_EQUIVALENT,
     CONF_BREATH_VOC_EQUIVALENT,
 ]
@@ -83,11 +81,6 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(CONF_IAQ): sensor.sensor_schema(
             unit_of_measurement=UNIT_IAQ,
             icon=ICON_GAUGE,
-            accuracy_decimals=0,
-            state_class=STATE_CLASS_MEASUREMENT,
-        ),
-        cv.Optional(CONF_IAQ_ACCURACY): sensor.sensor_schema(
-            icon=ICON_ACCURACY,
             accuracy_decimals=0,
             state_class=STATE_CLASS_MEASUREMENT,
         ),

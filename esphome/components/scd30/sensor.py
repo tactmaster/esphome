@@ -7,7 +7,6 @@ from esphome.const import (
     CONF_ID,
     CONF_HUMIDITY,
     CONF_TEMPERATURE,
-    CONF_TEMPERATURE_OFFSET,
     CONF_CO2,
     CONF_UPDATE_INTERVAL,
     CONF_VALUE,
@@ -68,10 +67,6 @@ CONFIG_SCHEMA = (
                 cv.int_range(min=0, max=0xFFFF, max_included=False),
             ),
             cv.Optional(CONF_AMBIENT_PRESSURE_COMPENSATION, default=0): cv.pressure,
-            cv.Optional(CONF_TEMPERATURE_OFFSET): cv.All(
-                cv.temperature,
-                cv.float_range(min=0, max=655.35),
-            ),
             cv.Optional(CONF_UPDATE_INTERVAL, default="60s"): cv.All(
                 cv.positive_time_period_seconds,
                 cv.Range(
@@ -100,9 +95,6 @@ async def to_code(config):
                 config[CONF_AMBIENT_PRESSURE_COMPENSATION]
             )
         )
-
-    if CONF_TEMPERATURE_OFFSET in config:
-        cg.add(var.set_temperature_offset(config[CONF_TEMPERATURE_OFFSET]))
 
     cg.add(var.set_update_interval(config[CONF_UPDATE_INTERVAL]))
 
