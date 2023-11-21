@@ -52,7 +52,6 @@ CONF_AMBIENT_PRESSURE_COMPENSATION = "ambient_pressure_compensation"
 CONF_AMBIENT_PRESSURE_COMPENSATION_SOURCE = "ambient_pressure_compensation_source"
 CONF_AUTOMATIC_SELF_CALIBRATION = "automatic_self_calibration"
 CONF_MEASUREMENT_MODE = "measurement_mode"
-CONF_TEMPERATURE_OFFSET = "temperature_offset"
 
 
 CONFIG_SCHEMA = (
@@ -86,7 +85,6 @@ CONFIG_SCHEMA = (
                 cv.int_range(min=0, max=0xFFFF, max_included=False),
             ),
             cv.Optional(CONF_AMBIENT_PRESSURE_COMPENSATION): cv.pressure,
-            cv.Optional(CONF_TEMPERATURE_OFFSET, default="4°C"): cv.temperature,
             cv.Optional(CONF_AMBIENT_PRESSURE_COMPENSATION_SOURCE): cv.use_id(
                 sensor.Sensor
             ),
@@ -109,7 +107,6 @@ SETTING_MAP = {
     CONF_AUTOMATIC_SELF_CALIBRATION: "set_automatic_self_calibration",
     CONF_ALTITUDE_COMPENSATION: "set_altitude_compensation",
     CONF_AMBIENT_PRESSURE_COMPENSATION: "set_ambient_pressure_compensation",
-    CONF_TEMPERATURE_OFFSET: "set_temperature_offset",
 }
 
 

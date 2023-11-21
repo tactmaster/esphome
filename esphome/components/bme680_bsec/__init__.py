@@ -9,7 +9,6 @@ AUTO_LOAD = ["sensor", "text_sensor"]
 MULTI_CONF = True
 
 CONF_BME680_BSEC_ID = "bme680_bsec_id"
-CONF_TEMPERATURE_OFFSET = "temperature_offset"
 CONF_IAQ_MODE = "iaq_mode"
 CONF_SAMPLE_RATE = "sample_rate"
 CONF_STATE_SAVE_INTERVAL = "state_save_interval"
@@ -36,7 +35,6 @@ CONFIG_SCHEMA = cv.All(
     cv.Schema(
         {
             cv.GenerateID(): cv.declare_id(BME680BSECComponent),
-            cv.Optional(CONF_TEMPERATURE_OFFSET, default=0): cv.temperature,
             cv.Optional(CONF_IAQ_MODE, default="STATIC"): cv.enum(
                 IAQ_MODE_OPTIONS, upper=True
             ),
@@ -65,7 +63,6 @@ async def to_code(config):
     await i2c.register_i2c_device(var, config)
 
     cg.add(var.set_device_id(str(config[CONF_ID])))
-    cg.add(var.set_temperature_offset(config[CONF_TEMPERATURE_OFFSET]))
     cg.add(var.set_iaq_mode(config[CONF_IAQ_MODE]))
     cg.add(var.set_sample_rate(config[CONF_SAMPLE_RATE]))
     cg.add(
